@@ -29,11 +29,18 @@ func (r *Repository) Get(_ context.Context, id string) (*model.Tweet, error) {
 	return m, nil
 }
 
-func (r *Repository) Put(_ context.Context, id string, tweet *model.Tweet) error {
+func (r *Repository) GetAll(_ context.Context) (map[string]*model.Tweet, error) {
 	r.RLock()
-	defer r.Unlock()
+	defer r.RUnlock()
 
-	r.data[id] = tweet
+	return r.data, nil
+}
+
+func (r *Repository) Put(_ context.Context, id string, message string) error {
+	r.RLock()
+	defer r.RUnlock()
+
+	r.data[id] = &model.Tweet{Message: message}
 
 	return nil
 }

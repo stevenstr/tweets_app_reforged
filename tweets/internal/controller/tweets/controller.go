@@ -3,7 +3,6 @@ package tweets
 import (
 	"context"
 	"errors"
-	"fmt"
 
 	"tweets.com/tweets/pkg/model"
 )
@@ -12,7 +11,8 @@ var ErrNotFound = errors.New("not found")
 
 type tweetsRepository interface {
 	Get(ctx context.Context, id string) (*model.Tweet, error)
-	Put(ctx context.Context, id string, tweet *model.Tweet) error
+	Put(ctx context.Context, id string, message string) error
+	GetAll(ctx context.Context) (map[string]*model.Tweet, error)
 }
 
 type Controller struct {
@@ -31,10 +31,14 @@ func (c *Controller) Get(ctx context.Context, id string) (*model.Tweet, error) {
 	return res, nil
 }
 
-func (c *Controller) Put(ctx context.Context, id string, tweet *model.Tweet) error {
-	err := c.repo.Put(ctx, id, tweet)
-	if err != nil {
-		return fmt.Errorf("some goes wrong: %v", err)
+func (c *Controller) GetAll(ctx context.Context) (map[string]*model.Tweet, error) {
+	res, err := c.repo.GetAll(ctx)
+	if err != nil && errors.Is(err, ErrNotFound) {
+		return nil, ErrNotFound
 	}
-	return nil
+	return res, nil
+}
+
+func (c *Controller) Put(ctx context.Context, id string, message string) error {
+	return c.repo.Put(ctx, id, message)
 }
