@@ -19,6 +19,7 @@ func main() {
 	http.Handle("/tweets/list", http.HandlerFunc(h.HandleGetAllTweet))
 	http.Handle("/tweets/get", http.HandlerFunc(h.HandleGetSingleTweet))
 	http.Handle("/tweets/put", http.HandlerFunc(h.HandlePutSingleTweet))
+	http.Handle("/tweets/time", http.HandlerFunc(h.HandleTime))
 
 	if err := http.ListenAndServe(":8081", nil); err != nil {
 		panic(err)

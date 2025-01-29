@@ -5,6 +5,7 @@ import (
 	"errors"
 	"log"
 	"net/http"
+	"time"
 
 	"tweets.com/tweets/internal/controller/tweets"
 )
@@ -74,5 +75,12 @@ func (h *Handler) HandleGetAllTweet(w http.ResponseWriter, req *http.Request) {
 		}
 	default:
 		w.WriteHeader(http.StatusBadRequest)
+	}
+}
+
+func (h *Handler) HandleTime(w http.ResponseWriter, req *http.Request) {
+	t := time.Now().Format(time.RFC1123)
+	if err := json.NewEncoder(w).Encode(t); err != nil {
+		log.Printf("Response encode error: %v\n", err)
 	}
 }
