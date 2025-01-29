@@ -10,14 +10,14 @@ import (
 
 type Repository struct {
 	sync.RWMutex
-	data map[string]*model.Tweets
+	data map[string]*model.Tweet
 }
 
 func New() *Repository {
-	return &Repository{data: map[string]*model.Tweets{}}
+	return &Repository{data: map[string]*model.Tweet{}}
 }
 
-func (r *Repository) Get(_ context.Context, id string) (*model.Tweets, error) {
+func (r *Repository) Get(_ context.Context, id string) (*model.Tweet, error) {
 	r.RLock()
 	defer r.RUnlock()
 
@@ -29,7 +29,7 @@ func (r *Repository) Get(_ context.Context, id string) (*model.Tweets, error) {
 	return m, nil
 }
 
-func (r *Repository) Put(_ context.Context, id string, tweet *model.Tweets) error {
+func (r *Repository) Put(_ context.Context, id string, tweet *model.Tweet) error {
 	r.RLock()
 	defer r.Unlock()
 
