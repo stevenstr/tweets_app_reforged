@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	"tweets.com/tweets/pkg/model"
+	"github.com/stevenstr/tweets_app_reforged/tweets/pkg/model"
 )
 
 var ErrNotFound = errors.New("not found")

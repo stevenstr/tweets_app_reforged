@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"time"
 
-	"tweets.com/tweets/internal/controller/tweets"
+	"github.com/stevenstr/tweets_app_reforged/tweets/internal/controller/tweets"
 )
 
 type Handler struct {
@@ -21,32 +21,33 @@ func New(ctrl *tweets.Controller) *Handler {
 func (h *Handler) HandleGetSingleTweet(w http.ResponseWriter, req *http.Request) {
 	id := req.FormValue("id")
 	if id == "" {
-		w.WriteHeader(http.StatusBadRequest) // 400
+		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest) // 400
 		return
 	}
 
 	switch req.Method {
 	case http.MethodGet:
 		v, err := h.ctrl.Get(req.Context(), id)
-		if err != nil && errors.Is(err, tweets.ErrNotFound) {
-			w.WriteHeader(http.StatusNotFound)
-			return
-		} else if err != nil {
-			w.WriteHeader(http.StatusNotFound)
+		if err != nil {
+			if errors.Is(err, tweets.ErrNotFound) {
+				http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound) // 404
+				return
+			}
+			http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
 		}
 
 		if err := json.NewEncoder(w).Encode(v); err != nil {
 			log.Printf("Response encode error: %v\n", err)
 		}
 	default:
-		w.WriteHeader(http.StatusBadRequest)
+		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 	}
 }
 
 func (h *Handler) HandlePutSingleTweet(w http.ResponseWriter, req *http.Request) {
 	id := req.FormValue("id")
 	if id == "" {
-		w.WriteHeader(http.StatusBadRequest) // 400
+		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 		return
 	}
 
@@ -54,10 +55,10 @@ func (h *Handler) HandlePutSingleTweet(w http.ResponseWriter, req *http.Request)
 	case http.MethodPut:
 		if err := h.ctrl.Put(req.Context(), req.FormValue("id"), req.FormValue("message")); err != nil {
 			log.Printf("Repository pu error: %v\n", err)
-			w.WriteHeader(http.StatusInternalServerError) // 500
+			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		}
 	default:
-		w.WriteHeader(http.StatusBadRequest)
+		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 	}
 }
 
@@ -66,7 +67,7 @@ func (h *Handler) HandleGetAllTweet(w http.ResponseWriter, req *http.Request) {
 	case http.MethodGet:
 		v, err := h.ctrl.GetAll(req.Context())
 		if err != nil && errors.Is(err, tweets.ErrNotFound) {
-			w.WriteHeader(http.StatusNotFound)
+			http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
 			return
 		}
 
@@ -74,7 +75,7 @@ func (h *Handler) HandleGetAllTweet(w http.ResponseWriter, req *http.Request) {
 			log.Printf("Response encode error: %v\n", err)
 		}
 	default:
-		w.WriteHeader(http.StatusBadRequest)
+		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 	}
 }
 
