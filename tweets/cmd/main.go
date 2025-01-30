@@ -4,9 +4,9 @@ import (
 	"log"
 	"net/http"
 
-	"tweets.com/tweets/internal/controller/tweets"
-	httphandler "tweets.com/tweets/internal/handler/http"
-	"tweets.com/tweets/internal/repository/memory"
+	"github.com/stevenstr/tweets_app_reforged/tweets/internal/controller/tweets"
+	httphandler "github.com/stevenstr/tweets_app_reforged/tweets/internal/handler/http"
+	"github.com/stevenstr/tweets_app_reforged/tweets/internal/repository/memory"
 )
 
 func main() {

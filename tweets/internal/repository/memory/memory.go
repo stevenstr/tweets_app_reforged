@@ -4,8 +4,8 @@ import (
 	"context"
 	"sync"
 
-	"tweets.com/tweets/internal/repository"
-	"tweets.com/tweets/pkg/model"
+	"github.com/stevenstr/tweets_app_reforged/tweets/internal/repository"
+	"github.com/stevenstr/tweets_app_reforged/tweets/pkg/model"
 )
 
 type Repository struct {

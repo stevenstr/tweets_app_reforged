@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"time"
 
-	"tweets.com/tweets/internal/controller/tweets"
+	"github.com/stevenstr/tweets_app_reforged/tweets/internal/controller/tweets"
 )
 
 type Handler struct {
