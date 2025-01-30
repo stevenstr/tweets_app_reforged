@@ -1,6 +1,6 @@
-# Tweeter like application
+# Twitter like web application
 
-Simple tweeter like web app to process tweets data.
+Simple twitter like web app to process tweets data.
 
 # Evalable endpoints
 
