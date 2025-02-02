@@ -44,6 +44,41 @@ func (h *Handler) HandleGetSingleTweet(w http.ResponseWriter, req *http.Request)
 	}
 }
 
+func (h *Handler) HandleDeleteSingleTweet(w http.ResponseWriter, req *http.Request) {
+	id := req.FormValue("id")
+	if id == "" {
+		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest) // 400
+		return
+	}
+
+	switch req.Method {
+	case http.MethodDelete:
+		if err := h.ctrl.Delete(req.Context(), id); err != nil {
+			http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
+		}
+	default:
+		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+	}
+}
+
+func (h *Handler) HandlePostSingleTweet(w http.ResponseWriter, req *http.Request) {
+	id := req.FormValue("id")
+	if id == "" {
+		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+		return
+	}
+
+	switch req.Method {
+	case http.MethodPost:
+		if err := h.ctrl.Post(req.Context(), req.FormValue("id"), req.FormValue("message")); err != nil {
+			log.Printf("Repository post error: %v\n", err)
+			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		}
+	default:
+		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+	}
+}
+
 func (h *Handler) HandlePutSingleTweet(w http.ResponseWriter, req *http.Request) {
 	id := req.FormValue("id")
 	if id == "" {
@@ -54,7 +89,7 @@ func (h *Handler) HandlePutSingleTweet(w http.ResponseWriter, req *http.Request)
 	switch req.Method {
 	case http.MethodPut:
 		if err := h.ctrl.Put(req.Context(), req.FormValue("id"), req.FormValue("message")); err != nil {
-			log.Printf("Repository pu error: %v\n", err)
+			log.Printf("Repository put error: %v\n", err)
 			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		}
 	default:

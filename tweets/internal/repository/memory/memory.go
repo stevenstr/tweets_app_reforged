@@ -40,7 +40,35 @@ func (r *Repository) Put(_ context.Context, id string, message string) error {
 	r.mx.RLock()
 	defer r.mx.RUnlock()
 
+	_, ok := r.data[id]
+	if !ok {
+		return repository.ErrNotFound
+	}
+
 	r.data[id] = &model.Tweet{Message: message}
+
+	return nil
+}
+
+func (r *Repository) Post(_ context.Context, id string, message string) error {
+	r.mx.RLock()
+	defer r.mx.RUnlock()
+
+	_, ok := r.data[id]
+	if ok {
+		return repository.ErrAlreadyExists
+	}
+
+	r.data[id] = &model.Tweet{Message: message}
+
+	return nil
+}
+
+func (r *Repository) Delete(_ context.Context, id string) error {
+	r.mx.RLock()
+	defer r.mx.RUnlock()
+
+	delete(r.data, id)
 
 	return nil
 }
