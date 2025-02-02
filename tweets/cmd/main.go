@@ -17,9 +17,11 @@ func main() {
 	h := httphandler.New(ctrl)
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("/tweets/list", h.HandleGetAllTweet)
 	mux.HandleFunc("/tweets/get", h.HandleGetSingleTweet)
+	mux.HandleFunc("/tweets/post", h.HandlePostSingleTweet)
 	mux.HandleFunc("/tweets/put", h.HandlePutSingleTweet)
+	mux.HandleFunc("/tweets/delete", h.HandleDeleteSingleTweet)
+	mux.HandleFunc("/tweets/list", h.HandleGetAllTweet)
 	mux.HandleFunc("/tweets/time", h.HandleTime)
 
 	if err := http.ListenAndServe(":8081", mux); err != nil {

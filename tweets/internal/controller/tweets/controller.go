@@ -11,7 +11,9 @@ var ErrNotFound = errors.New("not found")
 
 type tweetsRepository interface {
 	Get(ctx context.Context, id string) (*model.Tweet, error)
+	Post(ctx context.Context, id string, message string) error
 	Put(ctx context.Context, id string, message string) error
+	Delete(ctx context.Context, id string) error
 	GetAll(ctx context.Context) (map[string]*model.Tweet, error)
 }
 
@@ -41,4 +43,12 @@ func (c *Controller) GetAll(ctx context.Context) (map[string]*model.Tweet, error
 
 func (c *Controller) Put(ctx context.Context, id string, message string) error {
 	return c.repo.Put(ctx, id, message)
+}
+
+func (c *Controller) Post(ctx context.Context, id string, message string) error {
+	return c.repo.Post(ctx, id, message)
+}
+
+func (c *Controller) Delete(ctx context.Context, id string) error {
+	return c.repo.Delete(ctx, id)
 }
