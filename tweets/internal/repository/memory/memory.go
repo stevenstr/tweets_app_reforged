@@ -9,7 +9,7 @@ import (
 )
 
 type Repository struct {
-	mux  sync.RWMutex
+	mx   sync.RWMutex
 	data map[string]*model.Tweet
 }
 
@@ -18,8 +18,8 @@ func New() *Repository {
 }
 
 func (r *Repository) Get(_ context.Context, id string) (*model.Tweet, error) {
-	r.mux.RLock()
-	defer r.mux.RUnlock()
+	r.mx.RLock()
+	defer r.mx.RUnlock()
 
 	m, ok := r.data[id]
 	if !ok {
@@ -30,15 +30,15 @@ func (r *Repository) Get(_ context.Context, id string) (*model.Tweet, error) {
 }
 
 func (r *Repository) GetAll(_ context.Context) (map[string]*model.Tweet, error) {
-	r.mux.RLock()
-	defer r.mux.RUnlock()
+	r.mx.RLock()
+	defer r.mx.RUnlock()
 
 	return r.data, nil
 }
 
 func (r *Repository) Put(_ context.Context, id string, message string) error {
-	r.mux.RLock()
-	defer r.mux.RUnlock()
+	r.mx.RLock()
+	defer r.mx.RUnlock()
 
 	r.data[id] = &model.Tweet{Message: message}
 

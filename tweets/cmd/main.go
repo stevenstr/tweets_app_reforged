@@ -10,19 +10,19 @@ import (
 )
 
 func main() {
-
 	log.Println("Starting tweets microservice...")
+
 	repo := memory.New()
 	ctrl := tweets.New(repo)
 	h := httphandler.New(ctrl)
+	mux := http.NewServeMux()
 
-	http.Handle("/tweets/list", http.HandlerFunc(h.HandleGetAllTweet))
-	http.Handle("/tweets/get", http.HandlerFunc(h.HandleGetSingleTweet))
-	http.Handle("/tweets/put", http.HandlerFunc(h.HandlePutSingleTweet))
-	http.Handle("/tweets/time", http.HandlerFunc(h.HandleTime))
+	mux.HandleFunc("/tweets/list", h.HandleGetAllTweet)
+	mux.HandleFunc("/tweets/get", h.HandleGetSingleTweet)
+	mux.HandleFunc("/tweets/put", h.HandlePutSingleTweet)
+	mux.HandleFunc("/tweets/time", h.HandleTime)
 
-	if err := http.ListenAndServe(":8081", nil); err != nil {
-		panic(err)
+	if err := http.ListenAndServe(":8081", mux); err != nil {
+		log.Fatal(err)
 	}
-
 }
