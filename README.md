@@ -24,10 +24,16 @@ Go, Git, http/net, sync, context, go mod,
 git clone git@github.com:stevenstr/tweets_app_reforged.git
 ```
 - Install the hashicorp/consul
-- run the consul
+- Run the consul locally or run the consul in docker environment using the following command:
+#### local running of consul
 ```sh 
 consul agent -dev -ui
 ```
+#### docker running of consul
+```sh 
+docker run -d -p 8500:8500 -p 8600:8600/udp --name=dev-consul hashicorp/consul agent -server -ui -node=server-1 -bootstrap-expect=1 -client=0.0.0.0
+```
+
 - Go to the application directory:
 ```sh
 cd tweets_app_reforged\tweets\cmd\
@@ -46,9 +52,9 @@ http://localhost:8500/ui/dc1/services
 
 - Run some new micriservice instances using the following command:
 ```sh
-go run main.go --port 8082
-go run main.go --port 8090
+go run main.go --port 8085
 go run main.go --port 8086
+go run main.go --port 8087
 ```
 
 - check that consul can see them
@@ -56,6 +62,8 @@ go run main.go --port 8086
 http://localhost:8500/ui/dc1/services
 ```
 ![alt text](img/image1.png)
+
+![alt text](img/image2.png)
 
 # Usage
 ## Post the data
