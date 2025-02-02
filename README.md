@@ -23,6 +23,11 @@ Go, Git, http/net, sync, context, go mod,
 ```sh
 git clone git@github.com:stevenstr/tweets_app_reforged.git
 ```
+- Install the hashicorp/consul
+- run the consul
+```sh 
+consul agent -dev -ui
+```
 - Go to the application directory:
 ```sh
 cd tweets_app_reforged\tweets\cmd\
@@ -31,6 +36,26 @@ cd tweets_app_reforged\tweets\cmd\
 ```sh
 go run main.go
 ```
+
+- go to
+```sh
+http://localhost:8500/ui/dc1/services
+```
+
+![alt text](img/image.png)
+
+- Run some new micriservice instances using the following command:
+```sh
+go run main.go --port 8082
+go run main.go --port 8090
+go run main.go --port 8086
+```
+
+- check that consul can see them
+```sh
+http://localhost:8500/ui/dc1/services
+```
+![alt text](img/image1.png)
 
 # Usage
 ## Post the data
