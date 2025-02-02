@@ -1,6 +1,7 @@
 # Twitter like web application
 
 Simple twitter like web app with CRUD to process tweets data.
+Also implemented service discovery feature.
 
 # Evalable endpoints
 
@@ -15,7 +16,7 @@ Simple twitter like web app with CRUD to process tweets data.
 
 
 # Tech
-Go, Git, http/net, sync, context, go mod, 
+Go, Git, http/net, consul, docker sync, context, go mod, 
 
 # Install and run
 
