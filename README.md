@@ -1,3 +1,5 @@
+[![Go Report Card](https://goreportcard.com/badge/github.com/stevenstr/tweets_app_reforged)](https://goreportcard.com/report/github.com/stevenstr/tweets_app_reforged)
+
 # Twitter like web application
 
 Simple twitter like web app with CRUD to process tweets data.
